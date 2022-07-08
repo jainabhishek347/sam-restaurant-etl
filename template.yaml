@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Restaurant ETL using Lambda, S3 and redshift
+
+
+Globals:
+  Function:
+    Timeout: 100
+    Layers:
+      - !Ref ProductCoreLayer
+
+Parameters:
+  SourceBucketName:
+    Type: String
+
+Resources:
+    ## S3 bucket
+  SourceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref SourceBucketName
+
+  ETLFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: etl/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonS3FullAccess
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref SourceBucketName
+      Events:
+        S3FileUpload:
+          Type: S3
+          Properties:
+            Bucket: !Ref SourceBucket
+            Events: s3:ObjectCreated:*
+
+  ProductCoreLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: sam-app-dependencies
+            Description: Dependencies for sam app [sam-with-layers]
+            ContentUri: dependencies/
+            CompatibleRuntimes:
+              - python3.7
+              - python3.8
+            RetentionPolicy: Delete
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  ETLFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt ETLFunction.Arn
+  ETLFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt ETLFunctionRole.Arn
+  SourceBucketName:
+    Value: !Ref SourceBucketName
+    Description: S3 Bucket for object storage

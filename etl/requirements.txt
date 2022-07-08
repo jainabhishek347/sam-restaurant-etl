@@ -1,0 +1,6 @@
+requests
+psycopg2-binary
+pandas
+python-dateutil
+fsspec
+s3fs

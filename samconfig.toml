@@ -1,0 +1,13 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-restaurant-etl"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1a9iqikqg45i8"
+s3_prefix = "sam-restaurant-etl"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+parameter_overrides = "SourceBucketName=\"sam-restaurant-etl\""
+image_repositories = []
