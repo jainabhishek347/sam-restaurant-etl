@@ -13,7 +13,6 @@ jobs:
       - name: Install Dependencies with Apt Get
         run: |
           sudo apt-get update
-          sudo apt-get install python3.7
           sudo apt-get install python3.7 jq -y
       - name: Install Pip Dependencies for CI
         run: |
@@ -54,9 +53,7 @@ jobs:
       - name: SAM Build
         run: |
           python --version
-          python3.7 --version
           whereis python
-          ln -sf /usr/local/opt/python@3.7/bin/python3.7 /usr/local/bin/
           sam build
       - name: Run unit tests
         run: |
