@@ -13,7 +13,7 @@ jobs:
       - name: Install Dependencies with Apt Get
         run: |
           sudo apt-get update
-          sudo apt-get install python3.8 jq -y
+          sudo apt-get install python3.7 jq -y
       - name: Install Pip Dependencies for CI
         run: |
           pip3 install pytest
