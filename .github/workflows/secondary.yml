@@ -13,6 +13,7 @@ jobs:
       - name: Install Dependencies with Apt Get
         run: |
           sudo apt-get update
+          sudo apt-get install python3.7
           sudo apt-get install python3.7 jq -y
       - name: Install Pip Dependencies
         run: |
