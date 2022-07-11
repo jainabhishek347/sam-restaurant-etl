@@ -4,7 +4,7 @@ on:
     branches: [ main ]
 
 jobs:
-  sam-validate-build-test:
+  sam-validate-build-test-etl:
     runs-on: ubuntu-latest
     outputs:
       env-name: ${{ steps.env-name.outputs.environment }}
