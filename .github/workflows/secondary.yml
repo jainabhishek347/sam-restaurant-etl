@@ -51,6 +51,8 @@ jobs:
           echo "The branch is $BRANCH"
       - name: SAM Build
         run: |
+          python --version
+          ln -sf /usr/local/opt/python@3.7/bin/python3.7 /usr/local/bin/
           sam build
       - name: Run unit tests
         run: |
