@@ -69,5 +69,6 @@ jobs:
             --s3-bucket ${{ steps.vars.outputs.environment }} \
             --parameter-overrides \
               'ParameterKey=Name,ParameterValue=example \
+              ParameterKey=SourceBucketName,ParameterValue=$SourceBucketName \
               ParameterKey=Version,ParameterValue=${{ steps.vars.outputs.version }}' \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
