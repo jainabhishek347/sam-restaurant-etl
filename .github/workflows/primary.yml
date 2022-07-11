@@ -65,6 +65,7 @@ jobs:
           sam deploy --template-file .aws-sam/build/template.yaml \
             --stack-name ${{ steps.vars.outputs.environment }} \
             --s3-bucket ${{ steps.vars.outputs.environment }} \
+            --SourceBucketName etl${{ steps.vars.outputs.environment }} \
             --parameter-overrides \
               'ParameterKey=Name,ParameterValue=example \
               ParameterKey=Version,ParameterValue=${{ steps.vars.outputs.version }}' \
