@@ -65,8 +65,8 @@ jobs:
             || aws s3 mb s3://${{ steps.vars.outputs.environment }}
           # Run SAM Deploy
           sam deploy --template-file .aws-sam/build/template.yaml \
-            --stack-name ${{ steps.vars.outputs.environment }} \
-            --s3-bucket ${{ steps.vars.outputs.environment }} \
+            --stack-name sam-restaurant-etl \
+            --s3-bucket main-abhishek158005-sam-restaurant-etl \
             --parameter-overrides \
               'ParameterKey=Name,ParameterValue=example \
               ParameterKey=SourceBucketName,ParameterValue=etl-main-abhishek158005-sam-restaurant-etl \
