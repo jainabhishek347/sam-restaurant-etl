@@ -1,0 +1,48 @@
+1. At initial level some libraries are being imported for example "csv" because we get data from API into a csv then copy it to the base table which is TRIPS_STAGE_TABLE. "psycopg2" for connecting to PSQL, "requests" for getting data from an API.
+
+2. There is a class "TRIPS_CONFIG" with three methods insert_trips_stage, insert_trips_stage_toDim and 'insert_trips_stage_tofinal', which are executing all the operations for copy,insert and update data.
+
+3. Inside the class firstly the Connection is created in the global space then __INIT__(constructor) is defined. In the constructor, values from the database like table_names, output_file_path , output_file_name are setted_up.
+Also we are fetching some other details like column_names, datatypes and the mapping of values from a 'trips_config.csv' and setting the values for use throughout the script.
+The last job for Constructor is calling trips_stage_table.
+
+4. insert_trips_stage(): 
+- Now when insert_trips_stage() is called it fetchout the data from the api which is providing the data in CSV format.
+- First_query 'create_stage_table_query' creates the table by getting column_names from a configured variable           	"source_column_names".
+- Then writting the data to a csv whose name and path is already in database. 
+- Then this data is copying to the TRIPS_STAGE_TABLE.
+
+5. insert_trips_stage_toDim():
+- At first stage 'create_dim_table_query' query executed and create a table TRIPS_DIM_TABLE if the table is not created.
+- Secondly 'insert_dim_query' query is executed which inserts all unique records from TRIPS_STAGE_TABLE to TRIPS_DIM_TABLE
+  and also it cast the values into the desired datatype.
+- Then 'insert_onlyUpdated_dim_query' is executed that is responsible for inserting the old records if there is any change  in the columns.
+- Then 'update_is_activeAnd_updatedQuery' query is executed which updates the value for is_active and updated columns. 
+- Finally the insert_trips_stage_tofinal() is called at the last line which do the same for final table.
+- At last 'update_is_deleted_query' is executed and updates the value for is_deleted,is_active and updated columns.
+
+6. insert_trips_stage_tofinal():
+- At first 'create_final_table_query' that creates the table by getting names from the trips_config.csv.
+- Then 'insert_final_query' query is executed which inserts the only unique records to the TRIPS_FINAL_TABLE from 	TRIPS_STAGE_TABLE, also it cast the values into the desired datatype. 
+- Then 'update_final_values' query is executed which updates the values if there is any change on the same trip_id.
+- Then 'update_is_deleted' query is executed which updates the values for is_active, is_deleted and updated columns.
+- At last 'truncate_stage_query' query is running which truncate the TRIPS_STAGE_TABLE.
+
+POINTs TO REMEMBER:
+
+There are 4 columns which are hardcoded:
+a. is_active
+b. is_deleted
+c. created
+d. updated
+
+Column_name "trip_id" is supposed to be at first position and we are taken it as a  
+
+
+
+
+
+ 
+ 
+
+
